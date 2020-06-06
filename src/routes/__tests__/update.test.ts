@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import { app } from '../../app';
 import {getCookie} from "@tktbitch/common";
 
+jest.mock('../../nats-wrapper');
+
 const createTicket = async (title: string, price: number) => {
     return request(app)
         .post('/api/tickets')

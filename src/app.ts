@@ -17,9 +17,10 @@ app.use(cookieSession({
 }))
 app.use(currentUser);
 app.use(createTicketRouter);
+app.use(updateTicketRouter)
 app.use(showTicketRouter);
 app.use(indexTicketRouter);
-app.use(updateTicketRouter)
+
 
 app.all('*', async (req, res) => {
     throw new NotFoundError();

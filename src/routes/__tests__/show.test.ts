@@ -3,6 +3,8 @@ import { app } from '../../app';
 import {getCookie} from "@tktbitch/common";
 import mongoose from "mongoose";
 
+jest.mock('../../nats-wrapper');
+
 describe('GET /api/tickets/:id', () => {
 
     it('returns a 404 if the ticket is not found', async () => {

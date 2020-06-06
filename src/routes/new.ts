@@ -1,7 +1,9 @@
 import express, {Request, Response} from 'express';
-import {requireAuth, validateRequest} from "@tktbitch/common";
+import {BadRequestError, requireAuth, validateRequest} from "@tktbitch/common";
 import {body} from "express-validator";
 import {Ticket} from "../models/ticket";
+import {TicketCreatedPublisher} from "../events/publishers/ticket-created-publisher";
+import {natsWrapper} from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -21,7 +23,18 @@ router.post('/api/tickets', requireAuth, [
 
     // @ts-ignore
     const ticket = Ticket.build({title, price, userId})
-    await ticket.save();
+    try {
+        await ticket.save();
+        await new TicketCreatedPublisher(natsWrapper.client).publish({
+            id: ticket.id,
+            title: ticket.title,
+            price: ticket.price,
+            userId: ticket.userId
+        })
+    } catch (e) {
+        throw new BadRequestError(e.message);
+    }
+
     res.status(201).send(ticket);
 })
 
