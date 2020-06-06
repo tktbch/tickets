@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { app } from '../../app';
 import {Ticket} from "../../models/ticket";
-import {AuthHelper} from "@tktbitch/common";
+import {getCookie} from "@tktbitch/common";
 
 const URL = '/api/tickets'
 describe(URL, () => {
@@ -14,7 +14,7 @@ describe(URL, () => {
     })
 
     it('should create a ticket given a title and price', async () => {
-        const cookie = AuthHelper.signin();
+        const cookie = getCookie();
         let tickets = await Ticket.find({});
         expect(tickets.length).toEqual(0);
 
@@ -31,7 +31,7 @@ describe(URL, () => {
     })
 
     it('should require a title', async () => {
-        const cookie = AuthHelper.signin();
+        const cookie = getCookie();
         return request(app)
             .post(URL)
             .set('Cookie', cookie)
@@ -40,7 +40,7 @@ describe(URL, () => {
     })
 
     it('should require a price', async () => {
-        const cookie = AuthHelper.signin();
+        const cookie = getCookie();
         return request(app)
             .post(URL)
             .set('Cookie', cookie)
@@ -51,7 +51,7 @@ describe(URL, () => {
     })
 
     it('should require a price with a value', async () => {
-        const cookie = AuthHelper.signin();
+        const cookie = getCookie();
         return request(app)
             .post(URL)
             .set('Cookie', cookie)

@@ -1,11 +1,11 @@
 import request from 'supertest';
 import { app } from '../../app';
-import {AuthHelper} from "@tktbitch/common";
+import {getCookie} from "@tktbitch/common";
 
 const createTicket = async (title: string, price: number) => {
     return request(app)
         .post('/api/tickets')
-        .set('Cookie', AuthHelper.signin())
+        .set('Cookie', getCookie())
         .send({title, price})
 }
 

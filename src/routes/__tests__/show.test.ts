@@ -1,6 +1,6 @@
 import request from "supertest";
 import { app } from '../../app';
-import {AuthHelper} from "@tktbitch/common";
+import {getCookie} from "@tktbitch/common";
 import mongoose from "mongoose";
 
 describe('GET /api/tickets/:id', () => {
@@ -18,7 +18,7 @@ describe('GET /api/tickets/:id', () => {
         const price = 10.00;
         const resp = await request(app)
             .post('/api/tickets')
-            .set('Cookie', AuthHelper.signin())
+            .set('Cookie', getCookie())
             .send({title, price})
         const ticketResp = await request(app)
             .get(`/api/tickets/${resp.body.id}`)
