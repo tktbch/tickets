@@ -2,8 +2,7 @@ import request from 'supertest';
 import mongoose from "mongoose";
 import { app } from '../../app';
 import {getCookie} from "@tktbitch/common";
-
-jest.mock('../../nats-wrapper');
+import {natsWrapper} from "../../nats-wrapper";
 
 const createTicket = async (title: string, price: number) => {
     return request(app)
@@ -72,5 +71,20 @@ describe('PUT /api/tickets/:id', () => {
             .expect(200)
         expect(updateResponse.body.title).toEqual('t2');
         expect(updateResponse.body.price).toEqual(20);
+    })
+
+    it('should publish a ticket:updated event', async () => {
+        const ticket = await createTicket('shiznit', 50);
+
+        await request(app)
+            .put(`/api/tickets/${ticket.body.id}`)
+            .set('Cookie', getCookie())
+            .send({
+                title: 'Tha Shiznit',
+                price: 100
+            })
+            .expect(200)
+
+        expect(natsWrapper.client.publish).toHaveBeenCalled()
     })
 })

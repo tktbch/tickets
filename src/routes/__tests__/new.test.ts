@@ -2,8 +2,7 @@ import request from 'supertest';
 import { app } from '../../app';
 import {Ticket} from "../../models/ticket";
 import {getCookie} from "@tktbitch/common";
-
-jest.mock('../../nats-wrapper');
+import {natsWrapper} from "../../nats-wrapper";
 
 const URL = '/api/tickets'
 describe(URL, () => {
@@ -62,6 +61,21 @@ describe(URL, () => {
                 price: ''
             })
             .expect(400)
+    })
+
+    it('should publish a ticket:created event', async () => {
+        const title = 'new ticket';
+
+        await request(app)
+            .post('/api/tickets')
+            .set('Cookie', getCookie())
+            .send({
+                title,
+                price: 20
+            })
+            .expect(201)
+
+        expect(natsWrapper.client.publish).toHaveBeenCalled()
     })
 
 })
