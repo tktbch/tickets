@@ -1,5 +1,5 @@
 import express, {Request, Response} from 'express';
-import {NotAuthorizedError, NotFoundError, requireAuth, validateRequest} from "@tktbitch/common";
+import {BadRequestError, NotAuthorizedError, NotFoundError, requireAuth, validateRequest} from "@tktbitch/common";
 import {body} from "express-validator";
 import {Ticket} from "../models/ticket";
 import {natsWrapper} from "../nats-wrapper";
@@ -32,6 +32,10 @@ router.put('/api/tickets/:id', requireAuth, [
         throw new NotAuthorizedError('Unauthorized');
     }
 
+    if (ticket.orderId) {
+        throw new BadRequestError('Ticket is reserved.')
+    }
+
     ticket.title = title;
     ticket.price = price;
 
@@ -41,7 +45,8 @@ router.put('/api/tickets/:id', requireAuth, [
             id: ticket.id,
             title: ticket.title,
             price: ticket.price,
-            userId: ticket.userId
+            userId: ticket.userId,
+            version: ticket.version
         })
     } catch (e) {
         throw new Error(e)

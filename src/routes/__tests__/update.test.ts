@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { app } from '../../app';
 import {getCookie} from "@tktbitch/common";
 import {natsWrapper} from "../../nats-wrapper";
+import {Ticket} from "../../models/ticket";
 
 const createTicket = async (title: string, price: number) => {
     return request(app)
@@ -86,5 +87,25 @@ describe('PUT /api/tickets/:id', () => {
             .expect(200)
 
         expect(natsWrapper.client.publish).toHaveBeenCalled()
+    })
+
+    it('should reject updates if ticket is reserved', async () => {
+        const userId = new mongoose.Types.ObjectId().toHexString();
+        const orderId = new mongoose.Types.ObjectId().toHexString();
+        const ticket = Ticket.build({
+            userId,
+            title: 'Tha Shiznit',
+            price: 50
+        });
+        ticket.set({orderId});
+        await ticket.save();
+        await request(app)
+            .put(`/api/tickets/${ticket.id}`)
+            .set('Cookie', getCookie({id: userId, email: 'test@test.com'}))
+            .send({
+                title: 'Tha Shiznit',
+                price: 100
+            })
+            .expect(400)
     })
 })
