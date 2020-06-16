@@ -1,6 +1,6 @@
 import request from "supertest";
 import { app } from '../../app';
-import {getCookie} from "@tktbitch/common";
+import {getCookie} from "@tktbch/common";
 import mongoose from "mongoose";
 
 describe('GET /api/tickets/:id', () => {

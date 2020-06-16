@@ -1,4 +1,4 @@
-import {AbstractPublisher, Subjects, TicketCreatedEvent} from "@tktbitch/common";
+import {AbstractPublisher, Subjects, TicketCreatedEvent} from "@tktbch/common";
 
 
 export class TicketCreatedPublisher extends AbstractPublisher<TicketCreatedEvent>{

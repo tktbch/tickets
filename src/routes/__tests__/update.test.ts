@@ -1,7 +1,7 @@
 import request from 'supertest';
 import mongoose from "mongoose";
 import { app } from '../../app';
-import {getCookie} from "@tktbitch/common";
+import {getCookie} from "@tktbch/common";
 import {natsWrapper} from "../../nats-wrapper";
 import {Ticket} from "../../models/ticket";
 

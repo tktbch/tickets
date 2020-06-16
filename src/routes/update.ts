@@ -1,5 +1,5 @@
 import express, {Request, Response} from 'express';
-import {BadRequestError, NotAuthorizedError, NotFoundError, requireAuth, validateRequest} from "@tktbitch/common";
+import {BadRequestError, NotAuthorizedError, NotFoundError, requireAuth, validateRequest} from "@tktbch/common";
 import {body} from "express-validator";
 import {Ticket} from "../models/ticket";
 import {natsWrapper} from "../nats-wrapper";

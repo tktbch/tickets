@@ -1,10 +1,10 @@
 import {OrderCreatedListener} from "../order-created-listener";
 import {natsWrapper} from "../../../nats-wrapper";
 import {Ticket} from "../../../models/ticket";
-import {OrderCreatedEvent, OrderStatus} from "@tktbitch/common";
+import {OrderCreatedEvent, OrderStatus} from "@tktbch/common";
 import {Message} from "node-nats-streaming";
 import mongoose from "mongoose";
-import {Subjects} from "@tktbitch/common";
+import {Subjects} from "@tktbch/common";
 
 const getMongoId = () => new mongoose.Types.ObjectId().toHexString();
 

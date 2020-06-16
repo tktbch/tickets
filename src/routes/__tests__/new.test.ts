@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { app } from '../../app';
 import {Ticket} from "../../models/ticket";
-import {getCookie} from "@tktbitch/common";
+import {getCookie} from "@tktbch/common";
 import {natsWrapper} from "../../nats-wrapper";
 
 const URL = '/api/tickets'
